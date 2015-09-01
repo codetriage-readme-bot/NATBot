@@ -8,7 +8,7 @@ CFLAGS=-c -Wall -Wno-write-strings -Wno-unused -pthread
 all: hello
 
 hello: IRCClient.o IRCHandler.o IRCSocket.o TwitchPlaysAPI.o Main.o
-	$(CC) IRCClient.o IRCHandler.o IRCSocket.o TwitchPlaysAPI.o Main.o -o hello
+	$(CC) IRCClient.o IRCHandler.o IRCSocket.o TwitchPlaysAPI.o Main.o -o TwitchIRCBot
 
 Main.o: Main.cpp
 	$(CC) $(CFLAGS) Main.cpp

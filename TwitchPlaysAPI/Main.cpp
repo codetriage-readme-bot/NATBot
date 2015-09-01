@@ -17,5 +17,5 @@ int main(int argc, char* argv[])
 	//tClient.sendMessage("H");
 	// tClient.stop(); puts("STOPPED");
 
-//	while(1);
+	while(1);
 }
