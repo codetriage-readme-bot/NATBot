@@ -5,7 +5,9 @@
 #include <map>
 #include <algorithm>
 #include <signal.h>
+#ifdef _WIN32
 #include "pthread.h"
+#endif
 #include "IRCClient.h"
 
 using namespace std;
