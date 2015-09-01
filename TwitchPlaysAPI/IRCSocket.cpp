@@ -94,8 +94,9 @@ bool IRCSocket::Connect(char const* host, int port)
 	if (connect(_socket, servinfo->ai_addr, servinfo->ai_addrlen) == -1)
 	{
 		closesocket(_socket);
+        perror("Client Connected");
 		return false;
-		perror("Client Connected");
+		
 	}
 
     _connected = true;

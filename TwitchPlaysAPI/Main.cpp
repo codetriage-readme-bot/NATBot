@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 {
 	TwitchPlays tClient("TwitchPlays.cfg");
 	tClient.hookRaw(handleRaw);
-
+    
 	tClient.start();
 	//tClient.sendMessage("H");
 	// tClient.stop(); puts("STOPPED");
