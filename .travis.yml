@@ -1,0 +1,14 @@
+language: cpp
+
+compiler:
+  - gcc
+
+before_script: 
+  - ls
+  - cd TwitchPlaysAPI/
+
+script: make
+
+os:
+  - linux
+  - osx
