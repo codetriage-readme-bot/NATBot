@@ -12,3 +12,19 @@ script: make
 os:
   - linux
   - osx
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "dymnZA46C89aZbc2/S+fhx3yiWfyogiq2JsX4lCygtvWUIzWVMgelspu0Yvl9JP5jZObz8ulmhiiIQzTS9uIl27d/rJv4ZjFTzOWx07nWrdTT0CC6sRCKi6fzVzjRnRzcHX4c+AZaFGFNRVCNYuqemYgj+gCAJ9+Fnrkbt4FpUKUjA+v44b1ye4FJhyAC5D1Xfbg93wlfZpI4RWcVKNc3nj1TRIfcR9wkGX1mC0icZf1g7p2xIEdjx8vE8Y/HjgNO3sU+ke2kYqWwupvTYw8hO962B12JopiqbuxHII4rj7AP8tAkKXbIMuLRPP1oPyJbQqHDCKx0hpJtGWErfEQ4XB404F7251CIJrqQa3kCn15m3OyXTErHfOCQeiiWNSnIvubYLSOT6Q6XRVv9Ys4hBG0zVIKDWooX0JdmYGTOrOO1zlRjD9RHFDCstbyRYAR2yXgPMo9Vz73LiH1O10xGKG2HeCwgBtIJKWb1X/aNZ4Gsj/CsimowkC2cG6hLeNgj2iMV6tOw86AdNsHFKmoFxk1me6QpbvrN32cjV3eaHNdLbYODeIJC9T5XgEY7N2Mk3XkZd90Nn9JecRe/HJimZ2+quPQ22Uq4Ws5QiDcvKHOlpaniO9E+BLgJ2bbG8L5zuvBI+YRVJAVvMO5tQ3IObPkCQxB9aUExYIPI9Wq0tQ="
+                    
+addons:
+  coverity_scan:
+    project:
+      name: "hurnhu/TwitchPlaysAPI"
+      description: "Build submitted via Travis CI"
+    notification_email: hurnhu5622@gmail.com
+    build_command_prepend: "make clean"
+    build_command:   "make -j 4"
+    branch_pattern: coverity_scan
