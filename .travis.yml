@@ -15,13 +15,12 @@ addons:
       description: "Build submitted via Travis CI"
     notification_email: hurnhu5622@gmail.com
     build_command_prepend: "make clean"
-    build_command:   "make -j 4"
+    build_command:   "make -j 4,  printf $(cat /home/travis/build/hurnhu/TwitchPlaysAPI/TwitchPlaysAPI/cov-int/scm_log.txt)"
     branch_pattern: master
 
 before_script: 
   - ls
   - cd TwitchPlaysAPI/
-  - printf $(cat /home/travis/build/hurnhu/TwitchPlaysAPI/TwitchPlaysAPI/cov-int/scm_log.txt)
 
 script: make
 
