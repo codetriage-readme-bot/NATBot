@@ -16,7 +16,7 @@ addons:
     notification_email: hurnhu5622@gmail.com
     build_command_prepend: "./configure; make clean"
     build_command:   "make -j 4"
-    branch_pattern: coverity_scan
+    branch_pattern: master
 
 before_script: 
   - ls
