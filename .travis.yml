@@ -3,20 +3,20 @@ language: cpp
 compiler:
   - gcc
 
-env:
-  global:
+#env:
+#  global:
    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
    #   via the "travis encrypt" command using the project repo's public key
-  - secure: "MW+zFwlKJyn0pchkSOyEtbasgwl3XEIeqdoBSMwu81JdtiQy9I2f9eSxGBBKb9EvtDIoAFjeTylrwmTR+VbR8YbHxbs+xrSmhh4JouHTx/q5NVJXRll0NMX1/6Nceb1SlEQJxbyskCBofHUxUsyKT2VfXkf4xQnBCxpCvWHsjXeuvZAfKdVOddNCP6L89ATwt/gqF5zEIUI2NpuOlUEu8bRNM1xH32rZy89/xygCNLpQlHL1uRLlXTMuTlYiQOzX3SgCjLaY2woC8PqcMqK945lIkFtLm8kgpfEoOSVkEMwtvtloqOC9wyKNJVI0wCTvvSZsM8/BoLD4XTL6pKrRkgP0M3affFMBtUu6190GEjrd5d7eN320soQMMIUYxSG2+O3iWQ7iUZXJZdYoFcbxjKrxjhbOBFEYRcT5Xr8AEM9nksyAvp6YjlRe7SnWsrB20Jn+BBXptd29cIHwCq6t0hy4GclqaZqcdG+JDxck1G+iqEGcSX5qjFttNgVIE+0mt6VtCp1Us9qM0dzQICTd5ABK9tzo4M11ClEbvy86h7VeeeUgGQpbYYSNjRXq22w6VQx74FAATfKvWQKrM0IJF6YPhZbtEYW47j2HRWIO/zcYUXCJ23kOkfUAB0J39sljkRorkHT/g7N5UIy8b0VUrfVQ4AefrUexpmKRN9vQutE="
-addons:
-  coverity_scan:
-    project:
-      name: "hurnhu/TwitchPlaysAPI"
-      description: "Build submitted via Travis CI"
-    notification_email: hurnhu5622@gmail.com
-    build_command_prepend: ""
-    build_command:   "make -j 4"
-    branch_pattern: master
+#  - secure: "MW+zFwlKJyn0pchkSOyEtbasgwl3XEIeqdoBSMwu81JdtiQy9I2f9eSxGBBKb9EvtDIoAFjeTylrwmTR+VbR8YbHxbs+xrSmhh4JouHTx/q5NVJXRll0NMX1/6Nceb1SlEQJxbyskCBofHUxUsyKT2VfXkf4xQnBCxpCvWHsjXeuvZAfKdVOddNCP6L89ATwt/gqF5zEIUI2NpuOlUEu8bRNM1xH32rZy89/xygCNLpQlHL1uRLlXTMuTlYiQOzX3SgCjLaY2woC8PqcMqK945lIkFtLm8kgpfEoOSVkEMwtvtloqOC9wyKNJVI0wCTvvSZsM8/BoLD4XTL6pKrRkgP0M3affFMBtUu6190GEjrd5d7eN320soQMMIUYxSG2+O3iWQ7iUZXJZdYoFcbxjKrxjhbOBFEYRcT5Xr8AEM9nksyAvp6YjlRe7SnWsrB20Jn+BBXptd29cIHwCq6t0hy4GclqaZqcdG+JDxck1G+iqEGcSX5qjFttNgVIE+0mt6VtCp1Us9qM0dzQICTd5ABK9tzo4M11ClEbvy86h7VeeeUgGQpbYYSNjRXq22w6VQx74FAATfKvWQKrM0IJF6YPhZbtEYW47j2HRWIO/zcYUXCJ23kOkfUAB0J39sljkRorkHT/g7N5UIy8b0VUrfVQ4AefrUexpmKRN9vQutE="
+#addons:
+#  coverity_scan:
+#    project:
+#      name: "hurnhu/TwitchPlaysAPI"
+#      description: "Build submitted via Travis CI"
+#    notification_email: hurnhu5622@gmail.com
+#    build_command_prepend: ""
+#    build_command:   "make -j 4"
+#    branch_pattern: master
 
 before_script: 
   - ls
@@ -24,7 +24,6 @@ before_script:
 
 script: 
   - make
-  - printf $(cat /home/travis/build/hurnhu/TwitchPlaysAPI/TwitchPlaysAPI/cov-int/scm_log.txt)
 os:
   - linux
   - osx
