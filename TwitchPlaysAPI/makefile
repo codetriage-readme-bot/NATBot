@@ -6,7 +6,7 @@ CC=g++ #-pthread
 #CFLAGS=-c -Wall -Wno-write-strings -Wno-unused -std=c++11 #-pthread ME := $(shell uname)
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-    CFLAGS=-c -Wall -Wno-write-strings -Wno-unused
+    CFLAGS=-c -Wall -Wno-write-strings -Wno-unused -std=c++0x
 else
     CFLAGS=-c -Wall -Wno-write-strings -Wno-unused -std=c++11
 endif
