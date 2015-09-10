@@ -5,10 +5,14 @@
 #include <map>
 #include <algorithm>
 #include <signal.h>
+#include <mutex>
+#include <thread>
+#include <future>
 #ifdef _WIN32
 #include "pthread.h"
 #endif
 #include "IRCClient.h"
+
 
 using namespace std;
 
@@ -21,6 +25,7 @@ class ConsoleCommandHandler;
 class TwitchPlays
 {
 public:
+    
 	pthread_t thr_listener;
 
 	IRCClient client;

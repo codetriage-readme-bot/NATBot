@@ -1,6 +1,8 @@
 #include "TwitchPlaysAPI.h"
-
 using namespace std;
+
+
+mutex testMutex;
 
 TwitchPlays::TwitchPlays(const char *filename): callbackRaw(NULL)
 {
@@ -25,6 +27,7 @@ TwitchPlays::TwitchPlays(const char *filename): callbackRaw(NULL)
 		sscanf(s, "%s = %s", par, val);
 		if (strcmp(par, "host") == 0)
 		{
+            
 			host = new char[len + 1];
 			strcpy(host, val);
 		}
@@ -52,12 +55,15 @@ bool TwitchPlays::start()
 {
 	client.Debug(false);
 	curTwitch = this;
+    
+    thread t1(inputThread, &client), t2(TwitchListener, this);
 
-	// Start the input thread
-	pthread_t thr_Inp;
-	pthread_create(&thr_Inp, NULL, inputThread, (void *)&client);
+    t1.join();
+    cout << "t1" << endl;
+    t2.join();
+    cout << "t2" << endl;
 
-	pthread_create(&thr_listener, NULL, TwitchListener, (void *) this);
+    cout << "after my thread" << running << endl;
 
 	while (!running) ; // still loading
 	return true;
@@ -86,18 +92,24 @@ void * TwitchListener(void *arg)
 	if (irc.InitSocket())
 	{
 //		bool t = true;
+        testMutex.lock();
 		 std::cout << "Socket initialized. Connecting..." << std::endl;
+        testMutex.unlock();
 		if (irc.Connect(twi->host, twi->port))
 		{
+            testMutex.lock();
 			 std::cout << "Connected. Loggin in..." << std::endl;
+            testMutex.unlock();
 			if (irc.Login(twi->nick, twi->user, twi->password))
 			{
+                testMutex.lock();
 				 std::cout << "Logged in." << std::endl;
+                testMutex.unlock();
 				twi->running = true;
 				signal(SIGINT, signalHandler);
-
+                testMutex.lock();
 				irc.SendIRC("JOIN #" + twi->channel);
-
+                testMutex.unlock();
 				while (irc.Connected() && twi->running)
 				{
 					cout << "getting data" << endl;
@@ -159,7 +171,9 @@ void signalHandler(int signal)
 void * inputThread(void *client)
 {
 	std::string command;
+    testMutex.lock();
 	std::cout << "in this part" << std::endl;
+    testMutex.unlock();
 	while (true)
 	{
 		getline(std::cin, command);
@@ -175,10 +189,15 @@ void * inputThread(void *client)
 			((IRCClient*)client)->SendIRC(command);
 
 		if (command == "quit")
-			break;
+        {
+            testMutex.lock();
+            cout << "quiting" << endl;
+            testMutex.unlock();
+            break;
+        }
 	}
-
-	pthread_exit(NULL);
+    cout << "at return"<< endl;
+	//pthread_exit(NULL);
 	return NULL;
 }
 
