@@ -9,7 +9,7 @@ ifeq ($(UNAME_S),Linux)
     CFLAGS=-c -Wall -Wno-write-strings -Wno-unused
 else
     CFLAGS=-c -Wall -Wno-write-strings -Wno-unused -std=c++11
-
+endif
 all: hello
 
 hello: IRCClient.o IRCHandler.o IRCSocket.o TwitchPlaysAPI.o Main.o
