@@ -1,33 +1,34 @@
 #include <iostream>
-#include "TwitchPlaysAPI.h"
-#include <thread>
-#include <future>
-using namespace std;
+#include "NATBot.h"
+//#include <thread>
+//#include <future>
 
-void handleRaw(string caller, string text)
+void handleRaw(std::string caller, std::string text)
 {
-	cout << "in raw " << caller << ": " << text << endl;
+	std::cout << "in raw " << caller << ": " << text << std::endl;
 }
 
 //void test (int i)
 //{
     //cout << " int hre"<< i << endl;
 //}
-int main(int argc, char* argv[])
+int main()
 {
+    
     //thread t1(test,1), t2(test,2);
     //async(test(1));
     //t1.join();
     //t2.join();
-	
-    TwitchPlays tClient("TwitchPlays.cfg");
+    //std::cout << argc << "   r   " << argv << std::endl;
+    
+    NATBot tClient("TwitchPlays.cfg");
 	tClient.hookRaw(handleRaw);
     
 	tClient.start();
-    cout << "ending" << endl;
+    std::cout << "ending" << std::endl;
     
     //tClient.sendMessage("H");
 	tClient.stop(); puts("STOPPED");
-    cout << "stopped" << endl;
+    std::cout << "stopped" << std::endl;
 	//while(1);
 }

@@ -12,8 +12,8 @@ else
 endif
 all: hello
 
-hello: IRCClient.o IRCHandler.o IRCSocket.o TwitchPlaysAPI.o Main.o
-	$(CC) IRCClient.o IRCHandler.o IRCSocket.o TwitchPlaysAPI.o Main.o -o TwitchIRCBot
+hello: IRCClient.o IRCHandler.o IRCSocket.o NATBot.o Main.o
+	$(CC) IRCClient.o IRCHandler.o IRCSocket.o NATBot.o Main.o -o NATBot
 
 Main.o: Main.cpp
 	$(CC) $(CFLAGS) Main.cpp
@@ -27,9 +27,9 @@ IRCHandler.o: IRCHandler.cpp
 IRCSocket.o: IRCSocket.cpp
 	$(CC) $(CFLAGS) IRCSocket.cpp
 
-TwitchPlaysAPI.o: TwitchPlaysAPI.cpp
-	$(CC) $(CFLAGS) TwitchPlaysAPI.cpp
+NATBot.o: NATBot.cpp
+	$(CC) $(CFLAGS) NATBot.cpp
 
 clean:
-	rm *o TwitchIRCBot
+	rm *o NATBot
  

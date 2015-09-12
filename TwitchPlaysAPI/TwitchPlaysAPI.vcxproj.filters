@@ -24,7 +24,7 @@
     <ClInclude Include="IRCSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TwitchPlaysAPI.h">
+    <ClInclude Include="NATBot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TwitchPlaysAPI.cpp">
+    <ClCompile Include="NATBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

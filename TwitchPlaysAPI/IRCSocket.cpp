@@ -68,7 +68,7 @@ bool IRCSocket::Connect(char const* host, int port)
 {
 //    hostent* he;
 	int res;
-	char * portss = "6667";
+	char const * portss = "6667";
 	struct addrinfo hints, *servinfo;
 	hints.ai_family = AF_UNSPEC;    //IPv4 or IPv6 doesnt matter
 	hints.ai_socktype = SOCK_STREAM;        //TCP stream sockets
@@ -86,6 +86,7 @@ bool IRCSocket::Connect(char const* host, int port)
 	//setup socket
 	if ((_socket = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol)))
 	{
+        std::cout << "is this the fuck up? "  << std::endl;
 		perror("client: socket");
 
 	}
@@ -130,7 +131,7 @@ std::string IRCSocket::ReceiveData()
 
     memset(buffer, 0, MAXDATASIZE);
 
-    int bytes = recv(_socket, buffer, MAXDATASIZE - 1, 0);
+    size_t bytes = recv(_socket, buffer, MAXDATASIZE - 1, 0);
 
 	if (bytes > 0)
 	{

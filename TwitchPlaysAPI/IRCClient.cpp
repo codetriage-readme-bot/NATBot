@@ -84,9 +84,16 @@ void IRCClient::ReceiveData()
     while(getline(iss, line))
     {
         if (line.find("\r") != std::string::npos)
+        {
             line = line.substr(0, line.size() - 1);
+        }
+        if (line.find("NOTICE") != std::string::npos) {
+           // std::cout << "got an error dood" << std::endl;
+        }
+     //   std::cout << "stuck here" << std::endl;
         Parse(line);
     }
+   // std::cout << "dying" << std::endl;
 }
 
 void IRCClient::Parse(std::string data)
@@ -134,7 +141,7 @@ void IRCClient::Parse(std::string data)
 
     if (command == "ERROR")
     {
-        ;// std::cout << original << std::endl;
+       //  std::cout << original  << "    errored    " << std::endl;
         Disconnect();
         return;
     }
