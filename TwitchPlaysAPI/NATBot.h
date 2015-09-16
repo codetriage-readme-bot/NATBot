@@ -12,7 +12,6 @@
 #include "IRCClient.h"
 
 
-
 #ifndef _TWITCH_PLAYS
 #define _TWITCH_PLAYS
 
@@ -24,20 +23,20 @@ class NATBot
 public:
     
 
-	IRCClient client;
-	char *host;
-	int port;
+    IRCClient client;
+    char *host;
+    int port;
     std::string nick, user;
     std::string password;
     std::string channel;
-	
-	volatile bool running;
-
+    
+    volatile bool running;
+    
     void (*callbackRaw)(std::string, std::string);
-
-	NATBot(const char *filename = "TwitchPlays.cfg");
-	bool start();
-	bool stop();
+    
+    NATBot(const char *filename = "TwitchPlays.cfg");
+    bool start();
+    bool stop();
     void hookRaw(void (*cbRaw)(std::string, std::string));
     void sendMessage(std::string msg);
 };
@@ -47,14 +46,14 @@ class ConsoleCommandHandler
 public:
     bool AddCommand(std::string name, int argCount, void (*handler)(std::string /*params*/, IRCClient* /*client*/));
     void ParseCommand(std::string command, IRCClient* client);
-
+    
 private:
     struct CommandEntry
     {
         int argCount;
         void (*handler)(std::string /*arguments*/, IRCClient* /*client*/);
     };
-
+    
     std::map<std::string, CommandEntry> _commands;
 };
 

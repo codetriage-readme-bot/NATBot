@@ -10,7 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * http://www.gnu.org/licenses/lgpl.html 
+ * http://www.gnu.org/licenses/lgpl.html
  */
 
 #include "IRCHandler.h"
@@ -23,7 +23,7 @@ IRCCommandHandler ircCommandTable[NUM_IRC_CMDS] =
     { "PART",               &IRCClient::HandleChannelJoinPart           },
     { "NICK",               &IRCClient::HandleUserNickChange            },
     { "QUIT",               &IRCClient::HandleUserQuit                  },
-	{ "CTCP",				&IRCClient::HandleCTCP						},
+    { "CTCP",				&IRCClient::HandleCTCP						},
     { "353",                &IRCClient::HandleChannelNamesList          },
     { "433",                &IRCClient::HandleNicknameInUse             },
     { "001",                &IRCClient::HandleServerMessage             },
@@ -48,15 +48,14 @@ IRCCommandHandler ircCommandTable[NUM_IRC_CMDS] =
 
 void IRCClient::HandleCTCP(IRCMessage message)
 {
-	std::cout << "in here" << std::endl;
     std::string to = message.parameters.at(0);
     std::string text = message.parameters.at(message.parameters.size() - 1);
-
+    
     // Remove '\001' from start/end of the string
     text = text.substr(1, text.size() - 2);
-
-    ;// std::cout << "[" + message.prefix.nick << " requested CTCP " << text << "]" << std::endl;
-
+    
+    std::cout << "[" + message.prefix.nick << " requested CTCP " << text << "]" << std::endl;
+    
     if (to == _nick)
     {
         if (text == "VERSION") // Respond to CTCP VERSION
@@ -64,7 +63,7 @@ void IRCClient::HandleCTCP(IRCMessage message)
             SendIRC("NOTICE " + message.prefix.nick + " :\001VERSION Open source IRC client by Fredi Machado - https://github.com/Fredi/IRCClient \001");
             return;
         }
-
+        
         // CTCP not implemented
         SendIRC("NOTICE " + message.prefix.nick + " :\001ERRMSG " + text + " :Not implemented\001");
     }
@@ -74,79 +73,79 @@ void IRCClient::HandlePrivMsg(IRCMessage message)
 {
     std::string to = message.parameters.at(0);
     std::string text = message.parameters.at(message.parameters.size() - 1);
-
+    
     // Handle Client-To-Client Protocol
     if (text[0] == '\001')
     {
         HandleCTCP(message);
         return;
     }
-
+    
     if (to[0] == '#')
-	{
-        ;// std::cout << "From " + message.prefix.nick << " @ " + to + ": " << text << std::endl;
-		if (this->callbackRaw != NULL)
-			(*this->callbackRaw)(message.prefix.nick, text);
-	}
-	else
-        ;// std::cout << "From " + message.prefix.nick << ": " << text << std::endl;
+    {
+        std::cout << "From " + message.prefix.nick << " @ " + to + ": " << text << std::endl;
+        if (this->callbackRaw != NULL)
+            (*this->callbackRaw)(message.prefix.nick, text);
+    }
+    else
+        std::cout << "From " + message.prefix.nick << ": " << text << std::endl;
 }
 
 void IRCClient::HandleNotice(IRCMessage message)
 {
     std::string from = message.prefix.nick != "" ? message.prefix.nick : message.prefix.prefix;
     std::string text = message.parameters.at(message.parameters.size() - 1);
-
+    
     if (text[0] == '\001')
     {
         text = text.substr(1, text.size() - 2);
         if (text.find(" ") == std::string::npos)
         {
-            ;// std::cout << "[Invalid " << text << " reply from " << from << "]" << std::endl;
+            std::cout << "[Invalid " << text << " reply from " << from << "]" << std::endl;
             return;
         }
         std::string ctcp = text.substr(0, text.find(" "));
-        ;// std::cout << "[" << from << " " << ctcp << " reply]: " << text.substr(text.find(" ") + 1) << std::endl;
+        std::cout << "[" << from << " " << ctcp << " reply]: " << text.substr(text.find(" ") + 1) << std::endl;
     }
     else
-        ;// std::cout << "-" << from << "- " << text << std::endl;
+        std::cout << "-" << from << "- " << text << std::endl;
 }
 
 void IRCClient::HandleChannelJoinPart(IRCMessage message)
 {
-	if (message.parameters.size() == 0) return ;
+    if (message.parameters.size() == 0) return ;
     std::string channel = message.parameters.at(0);
     std::string action = message.command == "JOIN" ? "joins" : "leaves";
-    ;// std::cout << message.prefix.nick << " " << action << " " << channel << std::endl;
+    std::cout << message.prefix.nick << " " << action << " " << channel << std::endl;
 }
 
 void IRCClient::HandleUserNickChange(IRCMessage message)
 {
-	if (message.parameters.size() == 0) return ;
+    if (message.parameters.size() == 0) return ;
     std::string newNick = message.parameters.at(0);
-    ;// std::cout << message.prefix.nick << " changed his nick to " << newNick << std::endl;
+    std::cout << message.prefix.nick << " changed his nick to " << newNick << std::endl;
 }
 
 void IRCClient::HandleUserQuit(IRCMessage message)
 {
-	if (message.parameters.size() == 0) return ;
+    if (message.parameters.size() == 0) return ;
     std::string text = message.parameters.at(0);
-    ;// std::cout << message.prefix.nick << " quits (" << text << ")" << std::endl;
+    std::cout << message.prefix.nick << " quits (" << text << ")" << std::endl;
 }
 
 void IRCClient::HandleChannelNamesList(IRCMessage message)
 {
-	std::cout << "i made it here" << std::endl;
-	if (message.parameters.size() < 4) return ;
+    std::cout << "i made it here" << std::endl;
+    if (message.parameters.size() < 4) return ;
     std::string channel = message.parameters.at(2);
     std::string nicks = message.parameters.at(3);
-    ;// std::cout << "People on " << channel << ":" << std::endl << nicks << std::endl;
+    std::cout << "People on " << channel << ":" << std::endl << nicks << std::endl;
 }
 
 void IRCClient::HandleNicknameInUse(IRCMessage message)
 {
-	if (message.parameters.size() < 3) return ;
-    ;// std::cout << message.parameters.at(1) << " " << message.parameters.at(2) << std::endl;
+    if (message.parameters.size() < 3) return ;
+    std::cout << message.parameters.at(1) << " " << message.parameters.at(2) << std::endl;
 }
 
 void IRCClient::HandleServerMessage(IRCMessage message)
@@ -154,6 +153,6 @@ void IRCClient::HandleServerMessage(IRCMessage message)
     std::vector<std::string>::const_iterator itr = message.parameters.begin();
     ++itr; // skip the first parameter (our nick)
     for (; itr != message.parameters.end(); ++itr)
-        ;// std::cout << *itr << " ";
-    ;// std::cout << std::endl;
+        std::cout << *itr << " ";
+    std::cout << std::endl;
 }

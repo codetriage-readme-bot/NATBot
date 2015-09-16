@@ -10,7 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * http://www.gnu.org/licenses/lgpl.html 
+ * http://www.gnu.org/licenses/lgpl.html
  */
 
 #ifndef _IRCSOCKET_H
@@ -38,18 +38,18 @@ class IRCSocket
 {
 public:
     bool Init();
-
+    
     bool Connect(char const* host, int port);
     void Disconnect();
-
+    
     bool Connected() { return _connected; };
-
+    
     bool SendData(char const* data);
     std::string ReceiveData();
-
+    
 private:
     int _socket;
-
+    
     bool _connected;
 };
 
