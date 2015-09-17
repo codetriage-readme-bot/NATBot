@@ -10,13 +10,11 @@
 #include <chrono>
 #include <fstream>
 #include "IRCClient.h"
-
+#include "ConsoleCommandHandler.h"
+#include "Utils.h"
 
 #ifndef _TWITCH_PLAYS
 #define _TWITCH_PLAYS
-
-class NATBot;
-class ConsoleCommandHandler;
 
 class NATBot
 {
@@ -39,28 +37,16 @@ public:
     bool stop();
     void hookRaw(void (*cbRaw)(std::string, std::string));
     void sendMessage(std::string msg);
+private:
+    Utils utils;
 };
 
-class ConsoleCommandHandler
-{
-public:
-    bool AddCommand(std::string name, int argCount, void (*handler)(std::string /*params*/, IRCClient* /*client*/));
-    void ParseCommand(std::string command, IRCClient* client);
-    
-private:
-    struct CommandEntry
-    {
-        int argCount;
-        void (*handler)(std::string /*arguments*/, IRCClient* /*client*/);
-    };
-    
-    std::map<std::string, CommandEntry> _commands;
-};
 
 void msgCommand(std::string arguments, IRCClient* client);
 void joinCommand(std::string channel, IRCClient* client);
 void partCommand(std::string channel, IRCClient* client);
 void ctcpCommand(std::string arguments, IRCClient* client);
+void lsCommand(std::string arguments, IRCClient* client);
 void signalHandler(int signal);
 void * inputThread(void *client);
 

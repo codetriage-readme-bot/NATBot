@@ -44,10 +44,12 @@ IRCCommandHandler ircCommandTable[NUM_IRC_CMDS] =
     { "375",                &IRCClient::HandleServerMessage             },
     { "376",                &IRCClient::HandleServerMessage             },
     { "439",                &IRCClient::HandleServerMessage             },
+    
 };
 
 void IRCClient::HandleCTCP(IRCMessage message)
 {
+    std::cout << "Im in ctcp!" << std::endl;
     std::string to = message.parameters.at(0);
     std::string text = message.parameters.at(message.parameters.size() - 1);
     
@@ -74,6 +76,7 @@ void IRCClient::HandlePrivMsg(IRCMessage message)
     std::string to = message.parameters.at(0);
     std::string text = message.parameters.at(message.parameters.size() - 1);
     
+    std::cout << "handling the prv message" << std::endl;
     // Handle Client-To-Client Protocol
     if (text[0] == '\001')
     {
@@ -135,7 +138,6 @@ void IRCClient::HandleUserQuit(IRCMessage message)
 
 void IRCClient::HandleChannelNamesList(IRCMessage message)
 {
-    std::cout << "i made it here" << std::endl;
     if (message.parameters.size() < 4) return ;
     std::string channel = message.parameters.at(2);
     std::string nicks = message.parameters.at(3);

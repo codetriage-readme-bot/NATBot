@@ -11,8 +11,8 @@ NATBot::NATBot(const char *filename): callbackRaw(NULL)
     commandHandler.AddCommand("msg", 2, &msgCommand);
     commandHandler.AddCommand("join", 1, &joinCommand);
     commandHandler.AddCommand("part", 1, &partCommand);
-    commandHandler.AddCommand("ctcp", 0, &ctcpCommand);
-    
+    commandHandler.AddCommand("ctcp", 2, &ctcpCommand);
+    commandHandler.AddCommand("ls", 0, &lsCommand);
     FILE *fi = fopen(filename, "r");
     //check for file, if no file exists.
     //create a new one with correct formatting
@@ -64,8 +64,16 @@ NATBot::NATBot(const char *filename): callbackRaw(NULL)
     while (fgets(s, 200, fi))
     {
         len = strlen(s);
-        if (len == 0) continue;
-        if (s[len - 1] == '\n') s[len - 1] = '\0';
+        std::cout << val << std::endl;
+
+        if (len == 0)
+        {
+          continue;
+        }
+        if (s[len - 1] == '\n')
+        {
+            s[len - 1] = '\0';
+        }
         sscanf(s, "%s = %s", par, val);
         if (strcmp(par, "host") == 0)
         {
@@ -74,13 +82,21 @@ NATBot::NATBot(const char *filename): callbackRaw(NULL)
             strcpy(host, val);
         }
         else if (strcmp(par, "port") == 0)
+        {
             port = atoi(val);
+        }
         else if (strcmp(par, "nick") == 0)
+        {
             nick = val;
+        }
         else if (strcmp(par, "user") == 0)
+        {
             user = val;
+        }
         else if (strcmp(par, "password") == 0)
+        {
             password = val;
+        }
         else if (strcmp(par, "channel") == 0)
         {
             int i;
@@ -89,7 +105,13 @@ NATBot::NATBot(const char *filename): callbackRaw(NULL)
                 val[i] = isalpha(val[i]) ? tolower(val[i]) : val[i];
             channel = val;
         }
+        else if (strcmp(par, "debug") == 0)
+        {
+            std::cout << "the boolean is " << utils.to_bool(val) << " " << val << std::endl;
+            client.Debug(utils.to_bool(par));
+        }
     }
+    std::getchar();
     printf("Finished reading config file: %s\n", filename);
 }
 
@@ -147,6 +169,8 @@ void * TwitchListener(void *arg)
                 
                 twi->running = true;
                 signal(SIGINT, signalHandler);
+                irc.SendIRC("CAP REQ :twitch.tv/commands");
+                irc.SendIRC("CAP REQ :twitch.tv/membership");
                 irc.SendIRC("JOIN #" + twi->channel);
                 while (irc.Connected() && twi->running)
                 {
@@ -176,7 +200,7 @@ void msgCommand(std::string arguments, IRCClient* client)
     std::string text = arguments.substr(arguments.find(" ") + 1);
     
     std::cout << "To " + to + ": " + text << std::endl;
-    client->SendIRC("PRIVMSG " + to + " :" + text);
+    client->SendIRC("PRIVMSG #" + to + " :" + text);
 };
 
 void joinCommand(std::string channel, IRCClient* client)
@@ -189,17 +213,27 @@ void joinCommand(std::string channel, IRCClient* client)
 
 void partCommand(std::string channel, IRCClient* client)
 {
+    std::cout << "in the part command" << std::endl;
     if (channel[0] != '#')
         channel = "#" + channel;
     
     client->SendIRC("PART " + channel);
 }
+void lsCommand(std::string arguments, IRCClient* client)
+{
+    std::cout << "in the ls command" << std::endl;
+	client->SendIRC("HELP");
+}
 
 void ctcpCommand(std::string arguments, IRCClient* client)
 {
     
-    std::cout << "in ctcp command" << std::endl;
-    //client->SendIRC("PRIVMSG " + "hurnbot" + " :\001" + "test" + "\001");
+    std::string to = arguments.substr(0, arguments.find(" "));
+    std::string text = arguments.substr(arguments.find(" ") + 1);
+    
+    std::transform(text.begin(), text.end(), text.begin(), towupper);
+    
+    client->SendIRC("PRIVMSG " + to + " :\001" + text + "\001");
 }
 
 void signalHandler(int signal)
@@ -222,19 +256,18 @@ void * inputThread(void *client)
         if (command[0] == '/')
         {
             if (((IRCClient*)client)->GetDebug() == true) {
-                std::cout << "debug set" << std::endl;
+                std::cout << "debug true" << std::endl;
             }
-            std::cout << "command to parse: " << command << std::endl;
             commandHandler.ParseCommand(command, (IRCClient*)client);
+            
         }
         else
             ((IRCClient*)client)->SendIRC(command);
         
         if (command == "quit")
         {
-            lock.lock();
-            std::cout << "quiting" << std::endl;
-            lock.unlock();
+//            lock.lock();
+//            lock.unlock();
             break;
         }
 
@@ -242,43 +275,4 @@ void * inputThread(void *client)
     return NULL;
 }
 
-bool ConsoleCommandHandler::AddCommand(std::string name, int argCount, void(*handler)(std::string /*params*/, IRCClient* /*client*/))
-{
-    CommandEntry entry;
-    entry.argCount = argCount;
-    entry.handler = handler;
-    std::transform(name.begin(), name.end(), name.begin(), towlower);
-    _commands.insert(std::pair<std::string, CommandEntry>(name, entry));
-    return true;
-}
 
-void ConsoleCommandHandler::ParseCommand(std::string command, IRCClient* client)
-{
-    if (_commands.empty())
-    {
-        std::cout << "No commands available." << std::endl;
-        return;
-    }
-    
-    if (command[0] == '/')
-        command = command.substr(1); // Remove the slash
-    
-    std::string name = command.substr(0, command.find(" "));
-    std::string args = command.substr(command.find(" ") + 1);
-    size_t argCount = std::count(args.begin(), args.end(), ' ');
-    std::transform(name.begin(), name.end(), name.begin(), towlower);
-    
-    std::map<std::string, CommandEntry>::const_iterator itr = _commands.find(name);
-    if (itr == _commands.end())
-    {
-        std::cout << "Command not found." << std::endl;
-        return;
-    }
-    if (++argCount < itr->second.argCount)
-    {
-        std::cout << "Insuficient arguments." << std::endl;
-        return;
-    }
-    
-    (*(itr->second.handler))(args, client);
-}

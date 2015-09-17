@@ -52,7 +52,6 @@ bool IRCSocket::Init()
 #endif
         return false;
     }
-    
 #ifdef _WIN32
     u_long mode = 0;
     ioctlsocket(_socket, FIONBIO, &mode);
@@ -82,7 +81,6 @@ bool IRCSocket::Connect(char const* host, int port)
     }
     if ((_socket = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol)))
     {
-        std::cout << "is this the fuck up? "  << std::endl;
         perror("client: socket");
         
     }
@@ -114,6 +112,7 @@ void IRCSocket::Disconnect()
 
 bool IRCSocket::SendData(char const* data)
 {
+	std::cout << data << std::endl;
     if (_connected)
         if (send(_socket, data, strlen(data), 0) == -1)
             return false;

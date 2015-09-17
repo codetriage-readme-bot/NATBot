@@ -50,6 +50,7 @@ void IRCClient::Disconnect()
 bool IRCClient::SendIRC(std::string data)
 {
     data.append("\n");
+	std::cout << "sending " << data << std::endl;
     return _socket.SendData(data.c_str());
 }
 
@@ -68,10 +69,6 @@ bool IRCClient::Login(std::string nick, std::string user, std::string password)
 			}
 		}
 	}
-
-
-
-
     return false;
 }
 
@@ -149,8 +146,14 @@ void IRCClient::Parse(std::string data)
         return;
     }
 
-    IRCMessage ircMessage(command, cmdPrefix, parameters);
 
+    IRCMessage ircMessage(command, cmdPrefix, parameters);
+    std::cout << ircMessage.command << std::endl;
+    if (ircMessage.command == "ctcp")
+    {
+        std::cout << "befoure processing ctcp" << std::endl;
+        this->HandleCTCP(ircMessage);
+    }
     // Default handler
     int commandIndex = GetCommandHandler(command);
     if (commandIndex < NUM_IRC_CMDS)
@@ -160,6 +163,7 @@ void IRCClient::Parse(std::string data)
     }
     else if (_debug)
         std::cout << original << std::endl;
+    
 
     // Try to call hook (if any matches)
     CallHook(command, ircMessage);

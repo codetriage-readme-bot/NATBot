@@ -12,8 +12,8 @@ else
 endif
 all: hello
 
-hello: IRCClient.o IRCHandler.o IRCSocket.o NATBot.o Main.o
-	$(CC) IRCClient.o IRCHandler.o IRCSocket.o NATBot.o Main.o -o NATBot
+hello: IRCClient.o IRCHandler.o IRCSocket.o ConsoleCommandHandler.o Utils.o  NATBot.o Main.o
+	$(CC) IRCClient.o IRCHandler.o IRCSocket.o ConsoleCommandHandler.o Utils.o  NATBot.o Main.o -o NATBot
 
 Main.o: Main.cpp
 	$(CC) $(CFLAGS) Main.cpp
@@ -26,6 +26,12 @@ IRCHandler.o: IRCHandler.cpp
 
 IRCSocket.o: IRCSocket.cpp
 	$(CC) $(CFLAGS) IRCSocket.cpp
+
+ConsoleCommandHandler.o: ConsoleCommandHandler.cpp
+	$(CC) $(CFLAGS) ConsoleCommandHandler.cpp
+
+Utils.o: Utils.cpp
+	$(CC) $(CFLAGS) Utils.cpp
 
 NATBot.o: NATBot.cpp
 	$(CC) $(CFLAGS) NATBot.cpp
