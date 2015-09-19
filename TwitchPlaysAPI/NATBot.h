@@ -13,8 +13,8 @@
 #include "ConsoleCommandHandler.h"
 #include "Utils.h"
 
-#ifndef _TWITCH_PLAYS
-#define _TWITCH_PLAYS
+//#ifndef _TWITCH_PLAYS
+//#define _TWITCH_PLAYS
 
 class NATBot
 {
@@ -54,4 +54,4 @@ static ConsoleCommandHandler commandHandler;
 static NATBot *curTwitch;
 void * TwitchListener(void *);
 
-#endif
+//#endif
