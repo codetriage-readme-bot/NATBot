@@ -20,7 +20,7 @@ compiler:
 
 before_script: 
   - ls
-  - cd TwitchPlaysAPI/
+  - cd NATBot/
 
 script: 
   - make
