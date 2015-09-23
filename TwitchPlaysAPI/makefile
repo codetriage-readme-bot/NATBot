@@ -3,7 +3,6 @@
 CC=g++ #-pthread 
 # Hey!, I am comment number 2. I want to say that CFLAGS will be the
 # options I'll pass to the compiler.
-#CFLAGS=-c -Wall -Wno-write-strings -Wno-unused -std=c++1#-pthread ME := $(shell uname)
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
     CFLAGS=-c -Wall -Wno-write-strings -Wno-unused -Wno-sign-compare -std=c++0x
