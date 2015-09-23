@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwitchPlaysAPI", "TwitchPlaysAPI\TwitchPlaysAPI.vcxproj", "{F79A22B8-729C-4432-B47D-9714ECB8CA57}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NATBot", "NATBot\NATBot.vcxproj", "{F79A22B8-729C-4432-B47D-9714ECB8CA57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
